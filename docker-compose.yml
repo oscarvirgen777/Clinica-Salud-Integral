@@ -1,0 +1,25 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: clinica_user
+      POSTGRES_PASSWORD: clinica_pass
+      POSTGRES_DB: clinica_salud
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  api:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: "postgresql://clinica_user:clinica_pass@db:5432/clinica_salud?schema=public"
+      JWT_SECRET: "mi-secreto-super-seguro"
+    depends_on:
+      - db
+    command: sh -c "npx prisma migrate deploy && npx prisma db seed && npx tsx watch src/index.ts"
+
+volumes:
+  pgdata:   
