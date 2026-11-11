@@ -100,6 +100,10 @@ pnpm prisma db seed
 # 7. Arrancar la API
 pnpm dev
 
+## 📸 Swagger UI
+
+![Swagger UI](./docs/swagger.png)
+
 📡 Endpoints
 Auth
 Método	Ruta	Rol	Descripción
@@ -176,3 +180,4 @@ Variable	Descripción
 DATABASE_URL	String de conexión a PostgreSQL
 JWT_SECRET	Secreto para firmar tokens
 PORT	Puerto del servidor (default: 3000)
+
