@@ -29,39 +29,42 @@ La Clínica "Salud Integral" operaba con hojas de cálculo, lo que provocaba pé
 | `GERENCIA` | Reportes de volumen por especialidad y corte diario |
 
 ## 📁 Estructura del Proyecto
-   ├── prisma/
-│ ├── schema.prisma # Modelo de datos
-│ ├── migrations/ # Migraciones SQL
-│ └── seed.ts # Datos de prueba
-├── generated/ # Prisma Client (auto-generado)
+
+```
+├── prisma/
+│   ├── schema.prisma              # Modelo de datos
+│   ├── migrations/                # Migraciones SQL
+│   └── seed.ts                    # Datos de prueba
+├── generated/                     # Prisma Client (auto-generado)
 ├── src/
-│ ├── index.ts # Punto de entrada
-│ ├── app.ts # Configuración de Express
-│ ├── config/
-│ │ ├── prisma.ts # Instancia de PrismaClient
-│ │ └── swagger.ts # Swagger UI
-│ ├── middlewares/
-│ │ ├── auth.middleware.ts # Verificación de JWT
-│ │ ├── authorize.middleware.ts # Autorización por rol
-│ │ ├── error.middleware.ts # Manejo global de errores
-│ │ └── validate.middleware.ts # Validación con Zod
-│ ├── errors/
-│ │ ├── AppError.ts
-│ │ ├── NotFoundError.ts
-│ │ └── UnauthorizedError.ts
-│ ├── utils/
-│ │ └── logger.ts
-│ └── modules/
-│ ├── auth/ # Login
-│ ├── patients/ # CRUD + expediente
-│ ├── doctors/ # Directorio + filtro por especialidad
-│ ├── appointments/ # Agendamiento + gestión de estado
-│ └── reports/ # Reportes de gerencia
-├── src/tests/ # Tests automatizados
+│   ├── index.ts                   # Punto de entrada
+│   ├── app.ts                     # Configuración de Express
+│   ├── config/
+│   │   ├── prisma.ts              # Instancia de PrismaClient
+│   │   └── swagger.ts             # Swagger UI
+│   ├── middlewares/
+│   │   ├── auth.middleware.ts     # Verificación de JWT
+│   │   ├── authorize.middleware.ts# Autorización por rol
+│   │   ├── error.middleware.ts    # Manejo global de errores
+│   │   └── validate.middleware.ts # Validación con Zod
+│   ├── errors/
+│   │   ├── AppError.ts
+│   │   ├── NotFoundError.ts
+│   │   └── UnauthorizedError.ts
+│   ├── utils/
+│   │   └── logger.ts
+│   └── modules/
+│       ├── auth/                  # Login
+│       ├── patients/              # CRUD + expediente
+│       ├── doctors/               # Directorio + filtro por especialidad
+│       ├── appointments/          # Agendamiento + gestión de estado
+│       └── reports/               # Reportes de gerencia
+├── src/__tests__/                 # Tests automatizados
 ├── Dockerfile
 ├── docker-compose.yml
 ├── prisma7.config.ts
 └── .env.example
+```   
 
 ## 📦 Instalación
 
@@ -100,9 +103,6 @@ pnpm prisma db seed
 # 7. Arrancar la API
 pnpm dev
 
-## 📸 Swagger UI
-
-![Swagger UI](./docs/swagger.png)
 
 📡 Endpoints
 Auth
@@ -181,3 +181,4 @@ DATABASE_URL	String de conexión a PostgreSQL
 JWT_SECRET	Secreto para firmar tokens
 PORT	Puerto del servidor (default: 3000)
 
+![Swagger UI](./docs/swagger.png)   
