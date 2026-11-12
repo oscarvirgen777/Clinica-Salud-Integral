@@ -1,4 +1,9 @@
 # 🏥 Clínica Salud Integral — API RESTful
+[![CI](https://github.com/oscarvirgen777/Clinica-Salud-Integral/actions/workflows/ci.yml/badge.svg)](https://github.com/oscarvirgen777/Clinica-Salud-Integral/actions)   
+[![Tests](https://img.shields.io/badge/tests-12_passing-brightgreen)]()
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue)]()
+[![Prisma](https://img.shields.io/badge/Prisma-7-purple)]()
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-18-336791?logo=postgresql&logoColor=white)]()
 
 API RESTful para la gestión de pacientes, médicos, citas y reportes de una clínica médica. Diseñada como núcleo para futuras aplicaciones de recepcionistas, médicos y gerencia.
 
