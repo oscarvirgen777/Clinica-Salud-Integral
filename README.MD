@@ -6,6 +6,12 @@
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-18-336791?logo=postgresql&logoColor=white)]()
 
 API RESTful para la gestión de pacientes, médicos, citas y reportes de una clínica médica. Diseñada como núcleo para futuras aplicaciones de recepcionistas, médicos y gerencia.
+## 🚀 Images Ilustrativas
+
+
+![Swagger UI](./docs/swagger.png)   
+![ER Diagram](./docs/clinicaintegralrelaciones2.png)
+
 
 ## 🚀 Stack Tecnológico
 
@@ -72,9 +78,6 @@ La Clínica "Salud Integral" operaba con hojas de cálculo, lo que provocaba pé
 ```   
 
 ## 📦 Instalación
-![Swagger UI](./docs/swagger.png)   
-![ER Diagram](./docs/clinicaintegralrelaciones2.png)
-
 
 ### Prerequisites
 
