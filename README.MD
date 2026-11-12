@@ -10,7 +10,7 @@ API RESTful para la gestión de pacientes, médicos, citas y reportes de una cl�
 
 
 ![Swagger UI](./docs/swagger.png)   
-![ER Diagram](./docs/relacionesproyecto.png.png)
+![ER Diagram](./docs/relacionesproyecto.png)
 
 
 ## 🚀 Stack Tecnológico
