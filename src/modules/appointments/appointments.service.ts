@@ -46,12 +46,19 @@ export const appointmentsService = {
     })
   },
 
-  async findById(id: number) {
-    const appointment = await prisma.appointment.findUnique({
-      where: { id },
-      include: { patient: true, doctor: true },
-    })
-    if (!appointment) throw new NotFoundError('Cita', id)
-    return appointment
-  },
-}   
+async findById(id: number) {
+  const appointment = await prisma.appointment.findUnique({
+    where: { id },
+    include: {
+      patient: {
+        select: { id: true, name: true, phone: true },
+      },
+      doctor: {
+        select: { id: true, name: true, specialty: true },
+      },
+    },
+  })
+  if (!appointment) throw new NotFoundError('Cita', id)
+  return appointment
+}
+}

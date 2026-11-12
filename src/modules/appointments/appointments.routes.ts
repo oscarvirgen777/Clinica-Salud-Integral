@@ -1,13 +1,8 @@
-import { Router } from 'express';
-import { appointmentsController } from './appointments.controller';
-import { authorize } from '../../middlewares/authorize.middleware'
+import { Router } from 'express'
+import { appointmentsController } from './appointments.controller'
+import { authorize, ownDoctorResource, ownAppointment } from '../../middlewares/authorize.middleware'
 
-const router: Router = Router();
-
-router.post('/', authorize('RECEPCIONISTA'), appointmentsController.create);
-router.get('/doctor/:doctorId/schedule', authorize('MEDICO'), appointmentsController.doctorSchedule);
-router.patch('/:id/status', authorize('MEDICO'), appointmentsController.updateStatus);
-router.get('/:id', appointmentsController.findById);
+const router: Router = Router()
 
 /**
  * @swagger
@@ -47,7 +42,7 @@ router.get('/:id', appointmentsController.findById);
  *       403:
  *         description: Solo RECEPCIONISTA
  */
-router.post('/', authorize('RECEPCIONISTA'), appointmentsController.create);
+router.post('/', authorize('RECEPCIONISTA'), appointmentsController.create)
 
 /**
  * @swagger
@@ -55,6 +50,7 @@ router.post('/', authorize('RECEPCIONISTA'), appointmentsController.create);
  *   get:
  *     tags: [Citas]
  *     summary: Agenda del médico por rango de fechas
+ *     description: Solo puede ver su propia agenda
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -81,9 +77,9 @@ router.post('/', authorize('RECEPCIONISTA'), appointmentsController.create);
  *       200:
  *         description: Citas del médico en el rango
  *       403:
- *         description: Solo MEDICO
+ *         description: No puedes acceder a la agenda de otro médico
  */
-router.get('/doctor/:doctorId/schedule', authorize('MEDICO'), appointmentsController.doctorSchedule);
+router.get('/doctor/:doctorId/schedule', ownDoctorResource(), appointmentsController.doctorSchedule)
 
 /**
  * @swagger
@@ -91,7 +87,7 @@ router.get('/doctor/:doctorId/schedule', authorize('MEDICO'), appointmentsContro
  *   patch:
  *     tags: [Citas]
  *     summary: Actualizar estado de cita
- *     description: Cambia el estado a COMPLETADA o CANCELADA
+ *     description: Solo puede cambiar citas propias
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -115,11 +111,11 @@ router.get('/doctor/:doctorId/schedule', authorize('MEDICO'), appointmentsContro
  *       200:
  *         description: Estado actualizado
  *       403:
- *         description: Solo MEDICO
+ *         description: No puedes actualizar una cita que no es tuya
  *       404:
  *         description: Cita no encontrada
  */
-router.patch('/:id/status', authorize('MEDICO'), appointmentsController.updateStatus);
+router.patch('/:id/status', ownAppointment(), appointmentsController.updateStatus)
 
 /**
  * @swagger
@@ -141,6 +137,6 @@ router.patch('/:id/status', authorize('MEDICO'), appointmentsController.updateSt
  *       404:
  *         description: Cita no encontrada
  */
-router.get('/:id', appointmentsController.findById);
+router.get('/:id', appointmentsController.findById)
 
-export default router;
+export default router   

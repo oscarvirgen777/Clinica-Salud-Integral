@@ -5,6 +5,7 @@ export interface AuthPayload {
   id: number
   email: string
   role: 'RECEPCIONISTA' | 'MEDICO' | 'GERENCIA'
+  doctorId?: number | null
 }
 
 declare global {

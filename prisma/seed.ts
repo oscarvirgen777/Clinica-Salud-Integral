@@ -7,6 +7,7 @@ const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL! })
 const prisma = new PrismaClient({ adapter })
 
 async function main() {
+
   await prisma.appointment.deleteMany()
   await prisma.patient.deleteMany()
   await prisma.doctor.deleteMany()
@@ -19,13 +20,6 @@ async function main() {
 
   const hashedPassword = await bcrypt.hash('admin123', 10)
 
-  await prisma.user.createMany({
-    data: [
-      { name: 'Ana Recepcionista', email: 'ana@clinica.com', password: hashedPassword, role: 'RECEPCIONISTA' },
-      { name: 'Dr. Carlos', email: 'carlos@clinica.com', password: hashedPassword, role: 'MEDICO' },
-      { name: 'Gerente Laura', email: 'laura@clinica.com', password: hashedPassword, role: 'GERENCIA' },
-    ],
-  })
 
   await prisma.doctor.createMany({
     data: [
@@ -37,6 +31,16 @@ async function main() {
     ],
   })
 
+  // 3. USERS DESPUÉS
+  await prisma.user.createMany({
+    data: [
+      { name: 'Ana Recepcionista', email: 'ana@clinica.com', password: hashedPassword, role: 'RECEPCIONISTA' },
+      { name: 'Dr. Carlos', email: 'carlos@clinica.com', password: hashedPassword, role: 'MEDICO', doctorId: 1 },
+      { name: 'Gerente Laura', email: 'laura@clinica.com', password: hashedPassword, role: 'GERENCIA' },
+    ],
+  })
+
+  // 4. PATIENTS
   await prisma.patient.createMany({
     data: [
       { name: 'Roberto García', email: 'roberto@email.com', phone: '555-1001', dateOfBirth: new Date('1985-03-15') },
@@ -47,6 +51,7 @@ async function main() {
     ],
   })
 
+  // 5. APPOINTMENTS
   await prisma.appointment.createMany({
     data: [
       { date: new Date('2026-11-10T09:00:00'), status: 'COMPLETADA', notes: 'Control cardiaco trimestral', patientId: 1, doctorId: 1 },
@@ -60,9 +65,12 @@ async function main() {
     ],
   })
 
-  console.log('✅ Seed completado')
+  console.log(' Seed completado')
 }
 
 main()
-  .catch((e) => console.error(e))
-  .finally(() => prisma.$disconnect())   
+  .catch((e) => {
+    console.error(e)
+    process.exit(1)
+  })
+  .finally(() => prisma.$disconnect())

@@ -4,21 +4,6 @@ import jwt from 'jsonwebtoken'
 import { prisma } from '../../config/prisma'
 
 
-export async function register(req: Request, res: Response) {
-  try {
-    const { name, email, password, role } = req.body
-    const hashedPassword = await bcrypt.hash(password, 10)
-
-    const user = await prisma.user.create({
-      data: { name, email, password: hashedPassword, role },
-      select: { id: true, name: true, email: true, role: true }
-    })
-
-    res.status(201).json(user)
-  } catch {
-    res.status(500).json({ message: 'Error al registrar el usuario' })
-  }
-}
 
 export async function login(req: Request, res: Response) {
   try {
@@ -29,11 +14,11 @@ export async function login(req: Request, res: Response) {
       return res.status(401).json({ message: 'Credenciales inválidas' })
     }
 
-    const token = jwt.sign(
-      { id: user.id, email: user.email, role: user.role },
-      process.env.JWT_SECRET as string,
-      { expiresIn: '8h' }
-    )
+const token = jwt.sign(
+  { id: user.id, email: user.email, role: user.role, doctorId: user.doctorId },
+  process.env.JWT_SECRET as string,
+  { expiresIn: '8h' }
+)
 
     res.json({ token })
   } catch {

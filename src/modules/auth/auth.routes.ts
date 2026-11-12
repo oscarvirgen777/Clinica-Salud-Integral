@@ -1,10 +1,9 @@
 import { Router } from 'express'
-import { register, login } from '../auth/auth.controller'
+import { login } from '../auth/auth.controller'
 
 
 const router: Router = Router()
 
-router.post('/register', register)
 
 /**
  * @swagger
