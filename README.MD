@@ -72,6 +72,9 @@ La Clínica "Salud Integral" operaba con hojas de cálculo, lo que provocaba pé
 ```   
 
 ## 📦 Instalación
+![Swagger UI](./docs/swagger.png)   
+![ER Diagram](./docs/clinicaintegralrelaciones2.png)
+
 
 ### Prerequisites
 
@@ -185,7 +188,3 @@ Variable	Descripción
 DATABASE_URL	String de conexión a PostgreSQL
 JWT_SECRET	Secreto para firmar tokens
 PORT	Puerto del servidor (default: 3000)
-
-![Swagger UI](./docs/swagger.png)   
-![ER Diagram](./docs/clinicaintegralrelaciones2.png)
-
