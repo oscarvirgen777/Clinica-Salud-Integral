@@ -34,7 +34,7 @@ router.delete('/:id', authorize('RECEPCIONISTA'), doctorsController.remove);
  *               email:
  *                 type: string
  *                 format: email
- *                 example: carlos.med@clinica.com
+ *                 example: carlos.med555@clinica.com
  *               phone:
  *                 type: string
  *                 example: "555-0101"

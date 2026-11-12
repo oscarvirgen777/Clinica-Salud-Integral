@@ -36,7 +36,7 @@ router.delete('/:id', verifyToken, authorize('RECEPCIONISTA'), patientsControlle
  *               email:
  *                 type: string
  *                 format: email
- *                 example: roberto@email.com
+ *                 example: roberto123@email.com
  *               phone:
  *                 type: string
  *                 example: "555-1001"
@@ -108,12 +108,37 @@ router.get('/:id', verifyToken, patientsController.findById);
  *         required: true
  *         schema:
  *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: Juan Pérez Actualizado
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 example: juan.new@email.com
+ *               phone:
+ *                 type: string
+ *                 example: "555-2002"
+ *               dateOfBirth:
+ *                 type: string
+ *                 format: date
+ *                 example: "1990-06-20"
  *     responses:
  *       200:
  *         description: Paciente actualizado
- *       403:
- *         description: Solo RECEPCIONISTA
- */
+ *       400:
+ *         description: Datos inválidos
+ *       404:
+ *         description: Paciente no encontrado
+ *       409:
+ *         description: Email ya existe
+ */   
 router.put('/:id', verifyToken, authorize('RECEPCIONISTA'), patientsController.update);
 
 /**
@@ -131,11 +156,21 @@ router.put('/:id', verifyToken, authorize('RECEPCIONISTA'), patientsController.u
  *         schema:
  *           type: integer
  *     responses:
- *       204:
+ *       200:
  *         description: Paciente eliminado
- *       403:
- *         description: Solo RECEPCIONISTA
- */
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Paciente 1 eliminado correctamente"
+ *       404:
+ *         description: Paciente no encontrado
+ *       409:
+ *         description: No se puede eliminar (tiene citas)
+ */   
 router.delete('/:id', verifyToken, authorize('RECEPCIONISTA'), patientsController.remove);
 
 export default router;
