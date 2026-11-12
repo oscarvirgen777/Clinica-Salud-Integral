@@ -182,3 +182,5 @@ JWT_SECRET	Secreto para firmar tokens
 PORT	Puerto del servidor (default: 3000)
 
 ![Swagger UI](./docs/swagger.png)   
+![ER Diagram](./docs/clinicaintegralrelaciones2.png)
+
