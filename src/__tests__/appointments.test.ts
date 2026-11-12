@@ -6,7 +6,20 @@ import jwt from 'jsonwebtoken'
 
 async function getToken(role: 'RECEPCIONISTA' | 'MEDICO' | 'GERENCIA') {
   const user = await prisma.user.findFirst({ where: { role } })
-  return jwt.sign({ id: user!.id, email: user!.email, role: user!.role }, process.env.JWT_SECRET!, { expiresIn: '1h' })
+  return jwt.sign(
+    { id: user!.id, email: user!.email, role: user!.role, doctorId: user!.doctorId },
+    process.env.JWT_SECRET!,
+    { expiresIn: '1h' }
+  )
+}
+
+async function getTokenById(userId: number) {
+  const user = await prisma.user.findUnique({ where: { id: userId } })
+  return jwt.sign(
+    { id: user!.id, email: user!.email, role: user!.role, doctorId: user!.doctorId },
+    process.env.JWT_SECRET!,
+    { expiresIn: '1h' }
+  )
 }
 
 describe('POST /api/appointments (Agendar)', () => {
@@ -56,7 +69,13 @@ describe('POST /api/appointments (Agendar)', () => {
 
 describe('PATCH /api/appointments/:id/status', () => {
   it('debe cambiar estado a COMPLETADA', async () => {
-    const token = await getToken('MEDICO')
+    await prisma.appointment.update({
+      where: { id: 1 },
+      data: { status: 'PROGRAMADA' },
+    })
+
+    const token = await getTokenById(2)
+
     const res = await request(app)
       .patch('/api/appointments/1/status')
       .set('Authorization', `Bearer ${token}`)
