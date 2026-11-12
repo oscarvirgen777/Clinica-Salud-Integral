@@ -50,7 +50,7 @@ jobs:
         run: pnpm prisma generate
 
       - name: Push schema to database
-        run: pnpm prisma db push --skip-generate
+        run: pnpm prisma db push
 
       - name: Run seed
         run: pnpm prisma db seed
