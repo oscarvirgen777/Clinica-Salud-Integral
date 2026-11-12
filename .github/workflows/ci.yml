@@ -25,18 +25,22 @@ jobs:
           --health-timeout 5s
           --health-retries 5
 
+    env:
+      DATABASE_URL: "postgresql://clinica_user:clinica_pass@localhost:5432/clinica_salud?schema=public"
+      JWT_SECRET: "ci-test-secret"
+
     steps:
       - uses: actions/checkout@v4
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 10          # ← AGREGAR ESTA LÍNEA
+          version: 10
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22     # ← Cambiar de 20 a 22 (20 está deprecated)
+          node-version: 22
           cache: 'pnpm'
 
       - name: Install dependencies
@@ -44,21 +48,12 @@ jobs:
 
       - name: Generate Prisma Client
         run: pnpm prisma generate
-        env:
-          DATABASE_URL: "postgresql://clinica_user:clinica_pass@localhost:5432/clinica_salud?schema=public"
 
-      - name: Run migrations
-        run: pnpm prisma migrate deploy
-        env:
-          DATABASE_URL: "postgresql://clinica_user:clinica_pass@localhost:5432/clinica_salud?schema=public"
+      - name: Push schema to database
+        run: pnpm prisma db push --skip-generate
 
       - name: Run seed
         run: pnpm prisma db seed
-        env:
-          DATABASE_URL: "postgresql://clinica_user:clinica_pass@localhost:5432/clinica_salud?schema=public"
 
       - name: Run tests
-        run: pnpm test
-        env:
-          DATABASE_URL: "postgresql://clinica_user:clinica_pass@localhost:5432/clinica_salud?schema=public"
-          JWT_SECRET: "ci-test-secret"   
+        run: pnpm test   
