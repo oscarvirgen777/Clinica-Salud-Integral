@@ -6,17 +6,20 @@ export const doctorsService = {
     return prisma.doctor.create({ data });
   },
 
-  async findAll(specialty?: string) {
-    return prisma.doctor.findMany({
-      where: specialty ? { specialty } : undefined,
-    });
-  },
+async findAll(specialty?: string) {
+  return prisma.doctor.findMany({
+    where: specialty ? { specialty: { name: specialty } } : undefined,
+    include: { specialty: true },
+  });
+},
 
-  async findById(id: number) {
-    return prisma.doctor.findUnique({ where: { id } });
-  },
-
+async findById(id: number) {
+  return prisma.doctor.findUnique({
+    where: { id },
+    include: { specialty: true },
+  });
+},
   async remove(id: number) {
     return prisma.doctor.delete({ where: { id } });
   },
-};   
+};  
