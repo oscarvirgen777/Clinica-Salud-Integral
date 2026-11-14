@@ -8,30 +8,53 @@ const prisma = new PrismaClient({ adapter })
 
 async function main() {
 
+  // 1. BORRAR (orden inverso a las FK)
   await prisma.appointment.deleteMany()
   await prisma.patient.deleteMany()
   await prisma.doctor.deleteMany()
   await prisma.user.deleteMany()
+  await prisma.specialty.deleteMany()
 
+  // 2. REINICIAR SECUENCIAS
   await prisma.$executeRaw`ALTER SEQUENCE appointments_id_seq RESTART WITH 1;`
   await prisma.$executeRaw`ALTER SEQUENCE patients_id_seq RESTART WITH 1;`
   await prisma.$executeRaw`ALTER SEQUENCE doctors_id_seq RESTART WITH 1;`
   await prisma.$executeRaw`ALTER SEQUENCE users_id_seq RESTART WITH 1;`
+  await prisma.$executeRaw`ALTER SEQUENCE specialties_id_seq RESTART WITH 1;`
 
   const hashedPassword = await bcrypt.hash('admin123', 10)
 
+  // 3. SPECIALTIES (antes de doctors)
+  const specialties = [
+    { name: 'Cardiología' },
+    { name: 'Dermatología' },
+    { name: 'Pediatría' },
+    { name: 'Neurología' },
+    { name: 'Ortopedia' },
+  ]
 
+  for (const s of specialties) {
+    await prisma.specialty.create({ data: s })
+  }
+
+  const cardiologia = await prisma.specialty.findUnique({ where: { name: 'Cardiología' } })
+  const dermatologia = await prisma.specialty.findUnique({ where: { name: 'Dermatología' } })
+  const pediatria = await prisma.specialty.findUnique({ where: { name: 'Pediatría' } })
+  const neurologia = await prisma.specialty.findUnique({ where: { name: 'Neurología' } })
+  const ortopedia = await prisma.specialty.findUnique({ where: { name: 'Ortopedia' } })
+
+  // 4. DOCTORS (con specialtyId)
   await prisma.doctor.createMany({
     data: [
-      { name: 'Dr. Carlos Pérez', specialty: 'Cardiología', email: 'carlos.med@clinica.com', phone: '555-0101' },
-      { name: 'Dra. María López', specialty: 'Dermatología', email: 'maria.med@clinica.com', phone: '555-0102' },
-      { name: 'Dr. Jorge Ramírez', specialty: 'Pediatría', email: 'jorge.med@clinica.com', phone: '555-0103' },
-      { name: 'Dra. Sofía Torres', specialty: 'Neurología', email: 'sofia.med@clinica.com', phone: '555-0104' },
-      { name: 'Dr. Luis Mendoza', specialty: 'Ortopedia', email: 'luis.med@clinica.com', phone: '555-0105' },
+      { name: 'Dr. Carlos Pérez', specialtyId: cardiologia!.id, email: 'carlos.med@clinica.com', phone: '555-0101' },
+      { name: 'Dra. María López', specialtyId: dermatologia!.id, email: 'maria.med@clinica.com', phone: '555-0102' },
+      { name: 'Dr. Jorge Ramírez', specialtyId: pediatria!.id, email: 'jorge.med@clinica.com', phone: '555-0103' },
+      { name: 'Dra. Sofía Torres', specialtyId: neurologia!.id, email: 'sofia.med@clinica.com', phone: '555-0104' },
+      { name: 'Dr. Luis Mendoza', specialtyId: ortopedia!.id, email: 'luis.med@clinica.com', phone: '555-0105' },
     ],
   })
 
-  // 3. USERS DESPUÉS
+  // 5. USERS
   await prisma.user.createMany({
     data: [
       { name: 'Ana Recepcionista', email: 'ana@clinica.com', password: hashedPassword, role: 'RECEPCIONISTA' },
@@ -40,7 +63,7 @@ async function main() {
     ],
   })
 
-  // 4. PATIENTS
+  // 6. PATIENTS
   await prisma.patient.createMany({
     data: [
       { name: 'Roberto García', email: 'roberto@email.com', phone: '555-1001', dateOfBirth: new Date('1985-03-15') },
@@ -51,7 +74,7 @@ async function main() {
     ],
   })
 
-  // 5. APPOINTMENTS
+  // 7. APPOINTMENTS
   await prisma.appointment.createMany({
     data: [
       { date: new Date('2026-11-10T09:00:00'), status: 'COMPLETADA', notes: 'Control cardiaco trimestral', patientId: 1, doctorId: 1 },
@@ -73,4 +96,4 @@ main()
     console.error(e)
     process.exit(1)
   })
-  .finally(() => prisma.$disconnect())
+  .finally(() => prisma.$disconnect())   
