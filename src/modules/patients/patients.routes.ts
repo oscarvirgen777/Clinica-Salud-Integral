@@ -5,14 +5,6 @@ import { authorize } from '../../middlewares/authorize.middleware'
 
 const router: Router = Router();
 
-router.post('/', verifyToken, authorize('RECEPCIONISTA'), patientsController.create)
-
-router.post('/', verifyToken, authorize('RECEPCIONISTA'), patientsController.create);
-router.get('/', verifyToken, patientsController.findAll);
-router.get('/:id', verifyToken, patientsController.findById);
-router.put('/:id', verifyToken, authorize('RECEPCIONISTA'), patientsController.update);
-router.delete('/:id', verifyToken, authorize('RECEPCIONISTA'), patientsController.remove);
-
 
 /**
  * @swagger
@@ -55,6 +47,7 @@ router.delete('/:id', verifyToken, authorize('RECEPCIONISTA'), patientsControlle
  *       403:
  *         description: Solo RECEPCIONISTA
  */
+// verifyToken (¿quién eres?) → authorize (¿qué puedes hacer?) → controller
 router.post('/', verifyToken, authorize('RECEPCIONISTA'), patientsController.create);
 
 /**
@@ -69,6 +62,7 @@ router.post('/', verifyToken, authorize('RECEPCIONISTA'), patientsController.cre
  *       200:
  *         description: Lista de pacientes
  */
+// Cualquier rol autenticado puede listar.
 router.get('/', verifyToken, patientsController.findAll);
 
 /**
@@ -92,6 +86,7 @@ router.get('/', verifyToken, patientsController.findAll);
  *       404:
  *         description: Paciente no encontrado
  */
+// Expediente completo: patient + appointments (con doctor incluido).
 router.get('/:id', verifyToken, patientsController.findById);
 
 /**
@@ -138,7 +133,8 @@ router.get('/:id', verifyToken, patientsController.findById);
  *         description: Paciente no encontrado
  *       409:
  *         description: Email ya existe
- */   
+ */
+// PUT con .partial(): el cliente solo envía los campos a actualizar.
 router.put('/:id', verifyToken, authorize('RECEPCIONISTA'), patientsController.update);
 
 /**
@@ -170,7 +166,8 @@ router.put('/:id', verifyToken, authorize('RECEPCIONISTA'), patientsController.u
  *         description: Paciente no encontrado
  *       409:
  *         description: No se puede eliminar (tiene citas)
- */   
+ */
+// El controller mapea P2003 → 409 si el paciente tiene citas.
 router.delete('/:id', verifyToken, authorize('RECEPCIONISTA'), patientsController.remove);
 
 export default router;

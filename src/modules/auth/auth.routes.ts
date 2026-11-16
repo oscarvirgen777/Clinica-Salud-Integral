@@ -1,10 +1,16 @@
 import { Router } from 'express'
+// El handler de login (controller).
+// Nota: no se monta verifyToken aquí porque /login es PÚBlico
+// (es el endpoint que OTORGA el token, no uno que lo consume).
 import { login } from '../auth/auth.controller'
 
 
 const router: Router = Router()
 
-
+// Única ruta del módulo: POST /api/auth/login
+// Sin middlewares de auth/authorize (es el endpoint público que genera el token).
+// El controller (o model) lanza AppError(401) si las credenciales son inválidas,
+// y el error middleware global lo convierte en la respuesta 401.
 /**
  * @swagger
  * /api/auth/login:

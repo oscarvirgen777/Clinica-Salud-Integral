@@ -1,3 +1,9 @@
+# Orquesta dos servicios:
+#   - api: la aplicación Node.js (puerto 3000)
+#   - db: PostgreSQL 16 (puerto 5432 interno)
+#
+# Volumes: persisten la BD entre reinicios del contenedor.
+# depends_on: la API espera a que la BD esté lista antes de arrancar.   
 services:
   db:
     image: postgres:16-alpine

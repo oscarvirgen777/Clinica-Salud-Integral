@@ -1,3 +1,6 @@
+# Multi-stage build:
+# Stage 1: instala dependencias y compila TypeScript
+# Stage 2: solo copia el build + node_modules de producción (imagen más ligera)   
 FROM node:20-alpine AS base
 WORKDIR /app
 

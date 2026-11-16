@@ -1,8 +1,14 @@
-import { Router } from 'express'
-import { appointmentsController } from './appointments.controller'
-import { authorize, ownDoctorResource, ownAppointment } from '../../middlewares/authorize.middleware'
+import { Router } from 'express';
+import { appointmentsController } from './appointments.controller';
+import { authorize, ownDoctorResource, ownAppointment } from '../../middlewares/authorize.middleware';
+import { validate } from '../../middlewares/validate.middleware'; // ← NUEVO
+import {
+  createAppointmentSchema,
+  updateStatusSchema,
+  doctorScheduleQuery,
+} from './appointments.validation'; // ← NUEVO
 
-const router: Router = Router()
+const router: Router = Router();
 
 /**
  * @swagger
@@ -42,7 +48,13 @@ const router: Router = Router()
  *       403:
  *         description: Solo RECEPCIONISTA
  */
-router.post('/', authorize('RECEPCIONISTA'), appointmentsController.create)
+// Orden: authorize (rol) → validate (entrada) → controller
+router.post(
+  '/',
+  authorize('RECEPCIONISTA'),
+  validate(createAppointmentSchema), // ← NUEVO: valida req.body antes del controller
+  appointmentsController.create
+);
 
 /**
  * @swagger
@@ -79,7 +91,13 @@ router.post('/', authorize('RECEPCIONISTA'), appointmentsController.create)
  *       403:
  *         description: No puedes acceder a la agenda de otro médico
  */
-router.get('/doctor/:doctorId/schedule', ownDoctorResource(), appointmentsController.doctorSchedule)
+// Orden: ownDoctorResource (ownership) → validate (query) → controller
+router.get(
+  '/doctor/:doctorId/schedule',
+  ownDoctorResource(),
+  validate(doctorScheduleQuery, 'query'), // ← NUEVO: valida req.query (from, to)
+  appointmentsController.doctorSchedule
+);
 
 /**
  * @swagger
@@ -115,7 +133,13 @@ router.get('/doctor/:doctorId/schedule', ownDoctorResource(), appointmentsContro
  *       404:
  *         description: Cita no encontrada
  */
-router.patch('/:id/status', ownAppointment(), appointmentsController.updateStatus)
+// Orden: ownAppointment (ownership en BD) → validate (body) → controller
+router.patch(
+  '/:id/status',
+  ownAppointment(),
+  validate(updateStatusSchema), // ← NUEVO: valida req.body (status)
+  appointmentsController.updateStatus
+);
 
 /**
  * @swagger
@@ -137,6 +161,7 @@ router.patch('/:id/status', ownAppointment(), appointmentsController.updateStatu
  *       404:
  *         description: Cita no encontrada
  */
-router.get('/:id', appointmentsController.findById)
+// Sin validación Zod: solo un id numérico en params.
+router.get('/:id', appointmentsController.findById);
 
-export default router   
+export default router;   

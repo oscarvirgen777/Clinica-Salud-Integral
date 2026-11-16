@@ -1,8 +1,8 @@
-import { Router } from 'express'
-import { reportsController } from './reports.controller'
-import { authorize } from '../../middlewares/authorize.middleware'
+import { Router } from 'express';
+import { reportsController } from './reports.controller';
+import { authorize } from '../../middlewares/authorize.middleware';
 
-const router: Router = Router()
+const router: Router = Router();
 
 /**
  * @swagger
@@ -32,7 +32,9 @@ const router: Router = Router()
  *       403:
  *         description: Solo GERENCIA
  */
-router.get('/volume-by-specialty', authorize('GERENCIA'), reportsController.volumeBySpecialty)
+// Solo GERENCIA: reporte de volumen por especialidad.
+// Sin query params ni body → no hay validate.
+router.get('/volume-by-specialty', authorize('GERENCIA'), reportsController.volumeBySpecialty);
 
 /**
  * @swagger
@@ -71,6 +73,8 @@ router.get('/volume-by-specialty', authorize('GERENCIA'), reportsController.volu
  *       403:
  *         description: Solo GERENCIA
  */
-router.get('/daily', authorize('GERENCIA'), reportsController.dailyReport)
+// Solo GERENCIA: corte diario por fecha.
+// La validación del query param (date) la hace el controller con Zod.
+router.get('/daily', authorize('GERENCIA'), reportsController.dailyReport);
 
-export default router   
+export default router;   

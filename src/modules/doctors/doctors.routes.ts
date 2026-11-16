@@ -4,11 +4,6 @@ import { authorize } from '../../middlewares/authorize.middleware'
 
 const router: Router = Router();
 
-router.post('/', authorize('RECEPCIONISTA'), doctorsController.create);
-router.get('/', doctorsController.findAll);
-router.get('/:id', doctorsController.findById);
-router.delete('/:id', authorize('RECEPCIONISTA'), doctorsController.remove);
-
 /**
  * @swagger
  * /api/doctors:
@@ -23,14 +18,14 @@ router.delete('/:id', authorize('RECEPCIONISTA'), doctorsController.remove);
  *         application/json:
  *           schema:
  *             type: object
- *             required: [name, specialty, email, phone]
+ *             required: [name, email, phone, specialtyId]
  *             properties:
  *               name:
  *                 type: string
  *                 example: Dr. Carlos Pérez
- *               specialty:
- *                 type: string
- *                 example: Cardiología
+ *               specialtyId:
+ *                 type: integer
+ *                 example: 1
  *               email:
  *                 type: string
  *                 format: email
@@ -44,6 +39,8 @@ router.delete('/:id', authorize('RECEPCIONISTA'), doctorsController.remove);
  *       403:
  *         description: Solo RECEPCIONISTA
  */
+// Solo RECEPCIONISTA puede registrar médicos.
+// verifyToken NO se repite aquí: se aplica globalmente en app.ts.
 router.post('/', authorize('RECEPCIONISTA'), doctorsController.create);
 
 /**
@@ -64,6 +61,7 @@ router.post('/', authorize('RECEPCIONISTA'), doctorsController.create);
  *       200:
  *         description: Lista de médicos
  */
+// Cualquier rol autenticado puede listar/filtrar médicos.
 router.get('/', doctorsController.findAll);
 
 /**
@@ -86,6 +84,7 @@ router.get('/', doctorsController.findAll);
  *       404:
  *         description: Médico no encontrado
  */
+// Cualquier rol autenticado puede ver el detalle.
 router.get('/:id', doctorsController.findById);
 
 /**
@@ -108,6 +107,8 @@ router.get('/:id', doctorsController.findById);
  *       403:
  *         description: Solo RECEPCIONISTA
  */
+// Solo RECEPCIONISTA puede eliminar.
+// El service mapea P2003 (FK constraint) → 409 si el médico tiene citas.
 router.delete('/:id', authorize('RECEPCIONISTA'), doctorsController.remove);
 
 export default router;
