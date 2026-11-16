@@ -41,18 +41,19 @@ La Clínica "Salud Integral" operaba con hojas de cálculo, lo que provocaba pé
 
 ## 📁 Estructura del Proyecto
    
+```text
 Estructura del Proyecto
 ├── prisma/
-│   ├── schema.prisma          # Modelo de datos
-│   ├── migrations/            # Migraciones SQL
-│   ├── seed.ts                # Datos de prueba
-│   └── generated/             # Prisma Client (auto-generado)
+│   ├── schema.prisma           # Modelo de datos
+│   ├── migrations/             # Migraciones SQL
+│   ├── seed.ts                 # Datos de prueba
+│   └── generated/              # Prisma Client (auto-generado)
 ├── src/
-│   ├── index.ts               # Punto de entrada
-│   ├── app.ts                 # Configuración de Express
+│   ├── index.ts                # Punto de entrada
+│   ├── app.ts                  # Configuración de Express
 │   ├── config/
-│   │   ├── prisma.ts          # Instancia de PrismaClient
-│   │   └── swagger.ts         # Swagger UI
+│   │   ├── prisma.ts           # Instancia de PrismaClient
+│   │   └── swagger.ts          # Swagger UI
 │   ├── middlewares/
 │   │   ├── auth.middleware.ts       # Verificación de JWT
 │   │   ├── authorize.middleware.ts  # Autorización por rol + ownership
@@ -75,6 +76,7 @@ Estructura del Proyecto
 ├── docker-compose.yml
 ├── prisma.config.ts
 └── .env.example
+```   
 
 ## 🏗️ Arquitectura
 
