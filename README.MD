@@ -10,7 +10,7 @@ API RESTful para la gestión de pacientes, médicos, citas y reportes de una cl�
 ## 🚀 Images Ilustrativas
 
 ![Swagger UI](./docs/swagger.png)
-![ER Diagram](./docs/proyecto terminado.png)
+![ER Diagram](./docs/proyectoterminado.png)
 
 ## 🚀 Stack Tecnológico
 
@@ -42,38 +42,38 @@ La Clínica "Salud Integral" operaba con hojas de cálculo, lo que provocaba pé
 ## 📁 Estructura del Proyecto
    
 ├── prisma/
-│ ├── schema.prisma # Modelo de datos
-│ ├── migrations/ # Migraciones SQL
-│ └── seed.ts # Datos de prueba
-├── generated/ # Prisma Client (auto-generado)
+│   ├── schema.prisma          # Modelo de datos
+│   ├── migrations/            # Migraciones SQL
+│   ├── seed.ts                # Datos de prueba
+│   └── generated/             # Prisma Client (auto-generado)
 ├── src/
-│ ├── index.ts # Punto de entrada
-│ ├── app.ts # Configuración de Express
-│ ├── config/
-│ │ ├── prisma.ts # Instancia de PrismaClient
-│ │ └── swagger.ts # Swagger UI
-│ ├── middlewares/
-│ │ ├── auth.middleware.ts # Verificación de JWT
-│ │ ├── authorize.middleware.ts# Autorización por rol + ownership
-│ │ ├── error.middleware.ts # Manejo global de errores
-│ │ └── validate.middleware.ts # Validación con Zod
-│ ├── errors/
-│ │ ├── AppError.ts # Clase base de errores
-│ │ ├── NotFoundError.ts # 404
-│ │ └── UnauthorizedError.ts # 401
-│ ├── utils/
-│ │ └── logger.ts # Logger con niveles
-│ └── modules/
-│ ├── auth/ # Login (JWT + bcrypt)
-│ ├── patients/ # CRUD + expediente
-│ ├── doctors/ # Directorio + filtro por especialidad
-│ ├── appointments/ # Agendamiento + gestión de estado
-│ └── reports/ # Reportes de gerencia
-├── src/tests/ # Tests automatizados
+│   ├── index.ts               # Punto de entrada
+│   ├── app.ts                 # Configuración de Express
+│   ├── config/
+│   │   ├── prisma.ts          # Instancia de PrismaClient
+│   │   └── swagger.ts         # Swagger UI
+│   ├── middlewares/
+│   │   ├── auth.middleware.ts       # Verificación de JWT
+│   │   ├── authorize.middleware.ts  # Autorización por rol + ownership
+│   │   ├── error.middleware.ts      # Manejo global de errores
+│   │   └── validate.middleware.ts   # Validación con Zod
+│   ├── errors/
+│   │   ├── AppError.ts              # Clase base de errores
+│   │   ├── NotFoundError.ts         # 404
+│   │   └── UnauthorizedError.ts     # 401
+│   ├── utils/
+│   │   └── logger.ts                # Logger con niveles
+│   └── modules/
+│       ├── auth/                    # Login (JWT + bcrypt)
+│       ├── patients/                # CRUD + expediente
+│       ├── doctors/                 # Directorio + filtro por especialidad
+│       ├── appointments/            # Agendamiento + gestión de estado
+│       └── reports/                 # Reportes de gerencia
+├── src/tests/             # Tests automatizados
 ├── Dockerfile
 ├── docker-compose.yml
-├── prisma7.config.ts
-└── .env.example
+├── prisma.config.ts
+└── .env.example   
 
 ## 🏗️ Arquitectura
 
