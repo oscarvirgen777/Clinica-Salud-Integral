@@ -41,6 +41,7 @@ La Clínica "Salud Integral" operaba con hojas de cálculo, lo que provocaba pé
 
 ## 📁 Estructura del Proyecto
    
+Estructura del Proyecto
 ├── prisma/
 │   ├── schema.prisma          # Modelo de datos
 │   ├── migrations/            # Migraciones SQL
@@ -73,7 +74,7 @@ La Clínica "Salud Integral" operaba con hojas de cálculo, lo que provocaba pé
 ├── Dockerfile
 ├── docker-compose.yml
 ├── prisma.config.ts
-└── .env.example   
+└── .env.example
 
 ## 🏗️ Arquitectura
 
